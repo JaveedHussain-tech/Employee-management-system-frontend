@@ -1,0 +1,223 @@
+<mat-dialog-content>
+  <div class="w-full">
+    <form
+      [formGroup]="form"
+      (ngSubmit)="onSubmit()"
+      class="space-y-3 rounded-2xl w-[60vw] p-14 "
+    >
+    <!-- bg-white -->
+      <!-- name & Email -->
+      <div class="w-full flex justify-between flex-wrap">
+        <div class="min-w-[46%]">
+          <label for="name" class="block text-2xl font-medium text-gray-900"
+            >Employee Name</label
+          >
+
+          <div class="mt-2">
+            <mat-form-field appearance="outline" class="w-full">
+              <input
+                matInput
+                id="name"
+                type="text"
+                name="name"
+                placeholder="Enter your name"
+                class="mat-input-field"
+                formControlName="name"
+                [ngClass]="{
+                  'error-border': name.invalid && (name.touched || submitted)
+                }"
+              />
+
+              @if(name.errors?.['required'] && (name.touched || submitted)) {
+              <mat-error class="error-message"> Name is required </mat-error>
+              } @if(name.errors?.['scriptTag']) {
+              <mat-error class="error-message">
+                Invalid value entered
+              </mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="min-w-[46%]">
+          <label for="email" class="block text-2xl font-medium text-gray-900"
+            >Email address</label
+          >
+
+          <div class="mt-2">
+            <mat-form-field appearance="outline" class="w-full">
+              <input
+                matInput
+                id="email"
+                type="email"
+                name="email"
+                placeholder="Enter your email"
+                class="mat-input-field"
+                formControlName="email"
+                [ngClass]="{
+                  'error-border': email.invalid && (email.touched || submitted)
+                }"
+                [readonly]="data.type === 'UPDATE'"
+              />
+
+              @if(email.errors?.['required'] && (email.touched || submitted)) {
+              <mat-error class="error-message"> Email is required </mat-error>
+              } @if((email.errors?.['email'] || email.errors?.['pattern']) &&
+              (email.touched || submitted)) {
+              <mat-error class="error-message">
+                Invalid email format
+              </mat-error>
+              } @if(email.errors?.['scriptTag'] && !email.errors?.['required'])
+              {
+              <mat-error class="error-message">
+                Invalid value entered
+              </mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      <!--  Date Of Joining -->
+      <div class="w-full flex justify-between flex-wrap">
+
+        <div class="min-w-[46%]">
+          <label
+            for="dateOfJoining"
+            class="block text-2xl font-medium text-gray-900"
+            >Joining Date</label
+          >
+
+          <div class="mt-2">
+            <mat-form-field>
+              <mat-label>Choose a date</mat-label>
+              <input
+                formControlName="dateOfJoining"
+                matInput
+                [matDatepicker]="picker"
+                [ngClass]="{
+                  'error-border':
+                    dateOfJoining.invalid &&
+                    (dateOfJoining.touched || submitted)
+                }"
+                [readonly]="data.type === 'UPDATE'"
+              />
+              <mat-hint>MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle
+                matIconSuffix
+                [for]="picker"
+                [disabled]="data.type === 'UPDATE'"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+
+              @if(dateOfJoining.errors?.['required'] && (dateOfJoining.touched
+              || submitted)) {
+              <mat-error class="error-message">
+                Joining date is required
+              </mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      <!-- Department & Salary -->
+      <div class="w-full flex justify-between flex-wrap">
+        <div class="min-w-[46%]">
+          <label
+            for="department"
+            class="block text-2xl font-medium text-gray-900"
+            >Department</label
+          >
+
+          <div class="mt-2">
+            <mat-form-field>
+              <mat-label>Department</mat-label>
+              <mat-select
+                formControlName="department"
+                name="department"
+                [ngClass]="{
+                  'error-border':
+                    department.invalid && (department.touched || submitted)
+                }"
+              >
+                @for (department of departments; track department) {
+                <mat-option [value]="department">{{ department }}</mat-option>
+                }
+              </mat-select>
+
+              @if(department.errors?.['required'] && (department.touched ||
+              submitted)) {
+              <mat-error class="error-message">
+                Please select your department
+              </mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="min-w-[46%]">
+          <label for="salary" class="block text-2xl font-medium text-gray-900"
+            >Salary</label
+          >
+
+          <div class="mt-2">
+            <mat-form-field appearance="outline" class="w-full">
+              <input
+                matInput
+                name="salary"
+                type="number"
+                placeholder="Enter your salary"
+                class="mat-input-field"
+                formControlName="salary"
+                [ngClass]="{
+                  'error-border':
+                    salary.invalid && (salary.touched || submitted)
+                }"
+              />
+
+              @if(salary.errors?.['required'] && (salary.touched || submitted))
+              {
+              <mat-error class="error-message"> Salary is required </mat-error>
+              } @if(!salary.errors?.['required'] && salary.errors?.['min'] &&
+              (salary.touched || submitted)) {
+              <mat-error class="error-message">
+                Invalid salary value
+              </mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="text-center w-full flex justify-around">
+        <button type="button"
+          class="bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-12 rounded-md cursor-pointer"
+          (click)="onNoClick()"
+        >
+          Cancel
+        </button>
+
+        @if(data.type === "ADD") {
+        <button
+          type="submit"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-15 rounded-md cursor-pointer"
+          cdkFocusInitial
+        >
+          Add
+        </button>
+        } @else {
+        <button
+          type="button"
+          (click)="updateEmployee()"
+          class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-3 px-15 rounded-md cursor-pointer"
+        >
+          Update
+        </button>
+        }
+      </div>
+      
+    </form>
+  </div>
+</mat-dialog-content>

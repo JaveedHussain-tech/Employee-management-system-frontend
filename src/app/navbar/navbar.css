@@ -1,0 +1,6 @@
+::ng-deep .add-dialog {
+  max-width: 90vw !important;
+  width: auto !important;
+  min-width: 600px; /* Optional, depending on your form */
+  padding: 20px;
+}

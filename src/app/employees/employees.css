@@ -1,0 +1,25 @@
+table {
+    width: 100%;
+  }
+
+table {
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+
+th, td {
+    font-size: 14px;
+}
+
+th {
+    background-color: grey !important;
+    color: white;
+    
+}
+
+::ng-deep .delete-dialog {
+  max-width: 40vw !important;
+  width: auto !important;
+  min-width: 500px !important; 
+  min-height: 200px !important;
+  padding: 10px;
+}
